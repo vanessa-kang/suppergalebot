@@ -212,6 +212,32 @@ def alarm(context):
     job = context.job
     context.bot.send_message(job.context["chat_id"], job.context["str"])
 
+def sub(update,context):
+    try:
+        # define delim, get index
+        delim = "*"
+        pos = context.args.index(delim)
+
+        # store target Message to be modified
+        msgToModify = update.message.reply_to_message
+
+        # create strFrom and strTo
+        strFrom = " ".join(context.args[0:pos]).lower()
+        strTo = " ".join(context.args[pos+1:(len(context.args))]).lower()
+
+        # create modified Message text to be sent
+        newText = "Did you mean:\n" + '"' + (msgToModify.text.lower()).replace(strFrom,strTo) + '"'
+        
+        # send modified text, as a reply to the original target Message
+        context.bot.send_message(chat_id=update.message.chat_id,
+                                reply_to_message_id=msgToModify.message_id,
+                                text=newText)
+    except:
+        context.bot.send_message(chat_id=update.message.chat_id,
+                                reply_to_message_id=update.message.message_id,
+                                text="Usage: /sub <from> * <to>")
+
+
 def main():
 
   # Create Updater object and attach dispatcher to it
@@ -249,7 +275,7 @@ def main():
   dp.add_handler(CommandHandler('8ball',eightball))
   dp.add_handler(CommandHandler('xkcd',xkcd))
   dp.add_handler(CommandHandler('set', set_timer, pass_args=True, pass_job_queue=True, pass_chat_data=True))
-
+  dp.add_handler(CommandHandler('sub',sub))
   
   
   # Start the bot
