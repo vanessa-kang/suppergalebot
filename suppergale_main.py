@@ -12,13 +12,15 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Poll
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
 from lists import * # local lists.py file
+from info import * # local info.py file
 
 # counters for thankshelene
 PREV = time.time()
 NOW = 0
 DIFF = 0
 
-# TOKEN = '<token>' #insert token here
+NUSSAFELINK = "https://ipfs.io/ipfs/QmR6meTqzB6K8bsh4oHuw4JLhsPgTQX4uPgcnprGBF7WLK/"
+
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 
 
@@ -38,6 +40,7 @@ def list(update,context):
                               "• /thankshelene\n"
                               "• /announcement\n"
                               "• /samsays\n"
+                              "• /redblack\n"
                               
                               "\nMore Memes:\n"
                               "• /cat\n"
@@ -52,11 +55,17 @@ def list(update,context):
                               "• /8ball\n"
                               "• /xkcd <comic number>\n"
                               "• /set <seconds> <message>\n"
+                              "• /sub <from> * <to>\n"
                               
                               "\nUtility:\n"
                               "• /start\n"
                               "• /ping\n"
-                              "• /help")
+                              "• /help"
+                              "• /safe"
+                              )
+
+def safe(update,context):
+    update.message.reply_text(NUSSAFELINK)
 
 def redblack(update, context):
     question = "Red / Black"
@@ -252,15 +261,15 @@ def main():
   dp.add_handler(CommandHandler('start',start))
   dp.add_handler(CommandHandler('help',list))
   dp.add_handler(CommandHandler('ping',ping))
-
-  dp.add_handler(CommandHandler('redblack',redblack))
-  dp.add_handler(CallbackQueryHandler(Button))
+  dp.add_handler(CommandHandler('safe',safe))
 
   # Memes
   dp.add_handler(CommandHandler('rand',rand))
   dp.add_handler(CommandHandler('thankshelene',thankshelene))
   dp.add_handler(CommandHandler('announcement',announcement))
   dp.add_handler(CommandHandler('samsays',samsays))
+  dp.add_handler(CommandHandler('redblack',redblack))
+  dp.add_handler(CallbackQueryHandler(Button))
   
   # More Memes
   dp.add_handler(CommandHandler('cat', cat))
