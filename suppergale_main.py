@@ -32,7 +32,7 @@ def start(update,context):
 def ping(update, context):
     update.message.reply_text("pong! 🏓")
 
-def list(update,context):
+def help(update,context):
     update.message.reply_text("Currently available commands\n"
 
                               "\nMemes:\n"
@@ -53,6 +53,7 @@ def list(update,context):
                               
                               "\nOtouto clones:\n"
                               "• /8ball\n"
+                              "• /slap\n"
                               "• /xkcd <comic number>\n"
                               "• /set <seconds> <message>\n"
                               "• /sub <from> * <to>\n"
@@ -252,6 +253,19 @@ def sub(update,context):
                                 reply_to_message_id=update.message.message_id,
                                 text="Usage: /sub <from> * <to>")
 
+def slap(update,context):
+    try:
+        victor = update.message.from_user.first_name
+        victim = update.message.reply_to_message.from_user.first_name
+
+        tmpStr = random.choice(slapList)
+        slapMsg = (tmpStr.replace("VICTOR", victor)).replace("VICTIM", victim)
+
+        update.message.reply_text(slapMsg)
+
+    except:
+        update.message.reply_text("Try replying to a message with this command instead!")
+
 
 def main():
 
@@ -265,7 +279,7 @@ def main():
 
   # Utility
   dp.add_handler(CommandHandler('start',start))
-  dp.add_handler(CommandHandler('help',list))
+  dp.add_handler(CommandHandler('help',help))
   dp.add_handler(CommandHandler('ping',ping))
   dp.add_handler(CommandHandler('safe',safe))
 
@@ -292,6 +306,7 @@ def main():
   dp.add_handler(CommandHandler('xkcd',xkcd))
   dp.add_handler(CommandHandler('set', set_timer, pass_args=True, pass_job_queue=True, pass_chat_data=True))
   dp.add_handler(CommandHandler('sub',sub))
+  dp.add_handler(CommandHandler('slap',slap))
   
   
   # Start the bot
