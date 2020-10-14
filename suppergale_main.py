@@ -60,7 +60,7 @@ def list(update,context):
                               "\nUtility:\n"
                               "• /start\n"
                               "• /ping\n"
-                              "• /help"
+                              "• /help\n"
                               "• /safe"
                               )
 
@@ -126,6 +126,12 @@ def announcement(update,context):
 
 def samsays(update,context):
     update.message.reply_text(random.choice(samQuotesList))
+
+def ali(update,context):
+    replyText = "@alisudais new sticker"
+    context.bot.send_message(chat_id=update.message.chat_id,
+                             reply_to_message_id=update.message.reply_to_message.message_id,
+                             text=replyText)
 
 
 # MORE MEMES #
@@ -270,6 +276,7 @@ def main():
   dp.add_handler(CommandHandler('samsays',samsays))
   dp.add_handler(CommandHandler('redblack',redblack))
   dp.add_handler(CallbackQueryHandler(Button))
+  dp.add_handler(CommandHandler('ali',ali))
   
   # More Memes
   dp.add_handler(CommandHandler('cat', cat))
